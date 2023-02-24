@@ -137,6 +137,8 @@ UPROGS=\
 	$U/_task-0\
 	$U/_task-0-asm\
 	$U/_task-0-printf\
+	$U/_task-1-wc\
+	$U/_task-1-msg\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
