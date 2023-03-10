@@ -23,6 +23,11 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 
+int init_lock(void);
+int acquire_lock(int lockid);
+int release_lock(int lockid);
+int delete_lock(int lockid);
+
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
