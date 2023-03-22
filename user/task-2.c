@@ -61,6 +61,7 @@ int main(int argc, const char* argv[]) {
   int pid = getpid();
   if (child < 0) {
     printf("Fork error\n");
+    delete_lock(lock);
     exit(-1);
   }
   if (child == 0) {
