@@ -21,6 +21,7 @@ static void print_pdtable(pagetable_t table, int deep) {
     } else {
       printf(" flags ");
       consputc((PTE_R & pte) ? 'R' : '-');
+      consputc((PTE_W & pte) ? 'W' : '-');
       consputc((PTE_X & pte) ? 'X' : '-');
       consputc((PTE_U & pte) ? 'U' : '-');
       consputc((PTE_G & pte) ? 'G' : '-');
@@ -36,8 +37,32 @@ int sys_vmprint() {
   return 0;
 }
 
+static int pg_access(pagetable_t table, uint64 res_addr, uint64* entries, uint64 limit) {
+  for (int i = 0; i < PDSIZE; ++i) {
+    if (*entries >= limit) break;
 
-int sys_pgaccess(void) {
-  printf("TODO sys_pgaccess\n");
+    pte_t pte = table[i];
+    if (!(pte & PTE_V)) continue;
+
+    if (!(pte & (PTE_R | PTE_W | PTE_X))) {
+      pg_access((pagetable_t)PTE2PA(pte), res_addr, entries, limit);
+    } else {
+      if (PTE_A & pte) {
+        uint64 tmp = PTE2PA(pte);
+        if (copyout(myproc()->pagetable, res_addr + sizeof(uint64) * (*entries)++, (char*)&tmp, sizeof(uint64)) < 0) return -1;
+        table[i] &= ~PTE_A;
+      }
+    }
+  }
   return 0;
+}
+
+int sys_pgaccess(void) { // return number of accessed pages
+  uint64 res_addr, entries = 0, limit;
+  argaddr(0, &res_addr);
+  argaddr(1, &limit);
+  if (pg_access(myproc()->pagetable, res_addr, &entries, limit) < 0) 
+    return -1;
+  else
+    return entries;
 }

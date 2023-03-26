@@ -24,7 +24,7 @@ int sleep(int);
 int uptime(void);
 
 int vmprint(void);
-int pgaccess(void);
+int pgaccess(uint64, uint64);
 
 // ulib.c
 int stat(const char*, struct stat*);
