@@ -34,18 +34,15 @@ void pr_msg(const char* str) {
   strrev(dbuff_it, dbuff_it + i);
   dbuff_it += i;
 
-  char space[] = ": ";
-  put_to_buff(space, 0);
+  put_to_buff(": ", 0);
 
   put_to_buff(str, 1);
 }
 
 uint64 sys_dmesg(void) {
   printf("DMESG:\n");
-  char* it = dbuff;
-  while (it < dbuff_it) {
+  for (char* it = dbuff; it < dbuff_it; ++it) {
     consputc(*it ? *it : '\n');
-    it++;
   }
   printf("=====\n");
   return 0;
