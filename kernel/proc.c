@@ -322,6 +322,13 @@ fork(void)
   np->state = RUNNABLE;
   release(&np->lock);
 
+  static int cnt = 1000;
+  char aboba[] = "aboba";
+  for (int i = 0; i < PGSIZE * 2; i += 10) {
+    pr_msg("%s %d\n", aboba, cnt++);
+  }
+  pr_msg("Exec executed on ticks: %d\n", ticks);
+
   return pid;
 }
 
