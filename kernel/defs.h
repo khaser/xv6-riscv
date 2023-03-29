@@ -25,6 +25,9 @@ void            consputc(int);
 // exec.c
 int             exec(char*, char**);
 
+// sysdmesg.c
+void            pr_msg(const char*);
+
 // file.c
 struct file*    filealloc(void);
 void            fileclose(struct file*);

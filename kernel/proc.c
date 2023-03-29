@@ -322,6 +322,7 @@ fork(void)
   np->state = RUNNABLE;
   release(&np->lock);
 
+  pr_msg("Successfully forked");
   return pid;
 }
 
